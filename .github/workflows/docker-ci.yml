@@ -8,19 +8,18 @@ on:
     branches:
       - main
 
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build-and-deploy-dev:
-    runs-on: [self-moc-uz, self-hosted, linux, x64]
+    runs-on: [haproxy-self-runner, self-hosted, linux, x64]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Build Docker image
         run: |
           docker build  -t haproxy:main .
