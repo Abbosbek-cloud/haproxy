@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y rsyslog
 
 # Copy configuration files
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
-COPY rsyslog.c0onf /etc/rsyslog.conf
+COPY rsyslog.conf /etc/rsyslog.conf
 
 # Create necessary directories and set permissions
 RUN mkdir -p /var/lib/haproxy/dev && \
