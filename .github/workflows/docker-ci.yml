@@ -1,0 +1,33 @@
+name: haproxy Mockint.uz CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy-dev:
+    runs-on: [self-moc-uz, self-hosted, linux, x64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Build Docker image
+        run: |
+          docker build  -t haproxy:main .
+
+      - name: Deploy with Docker Compose
+        run: |
+          echo "Deploying to development environment"
+          docker-compose -f docker-compose.yml -p dev down || true
+          docker image prune -f || true
+          docker-compose -f docker-compose.yml -p dev up --force-recreate -d
